@@ -5,7 +5,7 @@ export default function Navbar() {
      <Link to='/'>Home</Link>
      <Link to='/courses'>Courses</Link>
      <Link to='/register'>Register</Link>
-     
+     <Link to='/cart'>Cart</Link>
 
   </nav>
 }
