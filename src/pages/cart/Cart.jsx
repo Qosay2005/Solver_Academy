@@ -94,10 +94,14 @@ export default function Cart() {
       {cartItems.length === 0 ? (
         <div className="rounded-[24px] border border-dashed border-slate-200 bg-white p-8 text-center text-slate-500 shadow-sm">
           {t('cart.empty')}
-          <div className="mt-4">
-            <Link to="/" className="text-sm font-semibold text-[#091E27]">
+          <div className="mt-4 flex flex-col items-center justify-center gap-3">
+            <div className="rounded-full bg-[#eef7fb] p-3 text-[#091E27]">
+              <span className="text-2xl">🛒</span>
+            </div>
+            <Typography variant="body1" className="text-slate-600">Your cart is empty right now.</Typography>
+            <Button component={Link} to="/shop" variant="contained" sx={{ borderRadius: 2, backgroundColor: '#091E27', textTransform: 'none' }}>
               {t('cart.continueShopping')}
-            </Link>
+            </Button>
           </div>
         </div>
       ) : (
@@ -238,6 +242,8 @@ export default function Cart() {
               </div>
 
               <Button
+                component={Link}
+                to="/checkout"
                 fullWidth
                 variant="contained"
                 sx={{

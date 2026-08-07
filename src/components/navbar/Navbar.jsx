@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Close, Menu } from '@mui/icons-material'
+import { Close, Menu, DarkMode, LightMode } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
 import useAuthStore from '../../hocks/authStore'
+import useThemeStore from '../../hocks/useThemeStore'
 
 export default function Navbar() {
   const token = useAuthStore((state) => state.token)
@@ -10,6 +11,8 @@ export default function Navbar() {
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
   const { t, i18n } = useTranslation()
+  const mode = useThemeStore((state) => state.mode)
+  const toggleMode = useThemeStore((state) => state.toggleMode)
 
   const handleLogout = () => {
     logout()
@@ -50,9 +53,26 @@ export default function Navbar() {
           <Link to='/register' className="rounded-full px-3 py-2 text-sm font-medium text-[#1B3A4B] transition hover:bg-[#eef7fb]">
             {t('navbar.register')}
           </Link>
+          <Link to='/shop' className="rounded-full px-3 py-2 text-sm font-medium text-[#1B3A4B] transition hover:bg-[#eef7fb]">
+            Shop
+          </Link>
           <Link to='/cart' className="rounded-full px-3 py-2 text-sm font-medium text-[#1B3A4B] transition hover:bg-[#eef7fb]">
             {t('navbar.cart')}
           </Link>
+          {token ? (
+            <Link to='/profile' className="rounded-full px-3 py-2 text-sm font-medium text-[#1B3A4B] transition hover:bg-[#eef7fb]">
+              Profile
+            </Link>
+          ) : null}
+
+          <button
+            type="button"
+            onClick={toggleMode}
+            className="rounded-full border border-[#cbd9e1] p-2 text-[#1B3A4B] transition hover:bg-[#eef7fb]"
+            aria-label="Toggle theme"
+          >
+            {mode === 'dark' ? <LightMode fontSize="small" /> : <DarkMode fontSize="small" />}
+          </button>
 
           <button
             type="button"
@@ -89,9 +109,28 @@ export default function Navbar() {
           <Link to='/register' onClick={closeMenu} className="rounded-xl px-3 py-2 text-sm font-medium text-[#1B3A4B] transition hover:bg-[#eef7fb]">
             {t('navbar.register')}
           </Link>
+          <Link to='/shop' onClick={closeMenu} className="rounded-xl px-3 py-2 text-sm font-medium text-[#1B3A4B] transition hover:bg-[#eef7fb]">
+            Shop
+          </Link>
           <Link to='/cart' onClick={closeMenu} className="rounded-xl px-3 py-2 text-sm font-medium text-[#1B3A4B] transition hover:bg-[#eef7fb]">
             {t('navbar.cart')}
           </Link>
+          {token ? (
+            <Link to='/profile' onClick={closeMenu} className="rounded-xl px-3 py-2 text-sm font-medium text-[#1B3A4B] transition hover:bg-[#eef7fb]">
+              Profile
+            </Link>
+          ) : null}
+
+          <button
+            type="button"
+            onClick={() => {
+              toggleMode()
+              closeMenu()
+            }}
+            className="rounded-xl border border-[#cbd9e1] px-3 py-2 text-left text-sm font-medium text-[#1B3A4B] transition hover:bg-[#eef7fb]"
+          >
+            {mode === 'dark' ? 'Light Mode' : 'Dark Mode'}
+          </button>
 
           <button
             type="button"

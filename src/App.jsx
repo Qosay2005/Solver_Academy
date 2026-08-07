@@ -3,10 +3,13 @@ import { RouterProvider } from 'react-router-dom'
 import router from './Router'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
+import { ThemeProvider, createTheme } from '@mui/material/styles'
+import useThemeStore from './hocks/useThemeStore'
 
 export default function App() {
   const queryClient = new QueryClient()
   const { i18n } = useTranslation()
+  const mode = useThemeStore((state) => state.mode)
 
   useEffect(() => {
     const isArabic = i18n.language?.startsWith('ar')
@@ -14,9 +17,30 @@ export default function App() {
     document.documentElement.lang = isArabic ? 'ar' : 'en'
   }, [i18n.language])
 
+  const theme = createTheme({
+    palette: {
+      mode,
+      primary: { main: '#091E27' },
+      secondary: { main: '#5B8C9C' },
+      background: {
+        default: mode === 'dark' ? '#0f172a' : '#dbe7ee',
+        paper: mode === 'dark' ? '#111827' : '#ffffff',
+      },
+      text: {
+        primary: mode === 'dark' ? '#f8fafc' : '#091E27',
+        secondary: mode === 'dark' ? '#cbd5e1' : '#4b5563',
+      },
+    },
+    typography: {
+      fontFamily: 'Roboto, sans-serif',
+    },
+  })
+
   return (
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <ThemeProvider theme={theme}>
+        <RouterProvider router={router} />
+      </ThemeProvider>
     </QueryClientProvider>
   )
 }
