@@ -10,13 +10,13 @@ export default function ProductDetails() {
   const { mutate } = useAddToCart();
   const [count, setCount] = useState(1);
 
-  const product = data?.response?.data || data?.data || data || null;
+  const product = data?.response || data?.data || data || null;
   const imageUrl = product?.image || product?.imageUrl || product?.thumbnail || product?.coverImage;
   const categoryName = product?.category?.name || product?.categoryName || product?.category;
   const productName = product?.name || product?.title || product?.productName;
   const description = product?.description || product?.shortDescription || product?.summary;
-  const ratingValue = product?.rating || product?.averageRating;
-  const reviewsCount = product?.reviewsCount || product?.reviewCount || product?.ratingCount;
+  const ratingValue = product?.rate || product?.rating || product?.averageRating;
+  const reviewsCount = product?.reviews?.length || product?.reviewsCount || product?.reviewCount || product?.ratingCount;
   const priceValue = product?.price || product?.priceValue || product?.currentPrice || product?.amount;
   const currency = product?.currency || product?.currencyCode || product?.currencySymbol;
 
@@ -29,6 +29,8 @@ export default function ProductDetails() {
   }
 
   if (isError) {
+    console.error('product details error', error);
+
     return (
       <div className="mx-auto max-w-6xl px-4 py-8">
         <Alert
@@ -97,7 +99,7 @@ export default function ProductDetails() {
               </Typography>
             ) : null}
 
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <div className="mt-6 flex flex-col gap-3 rounded-[24px] border border-slate-200 bg-[#eef7fb] p-4 sm:flex-row sm:items-center">
               <TextField
                 type="number"
                 label="Count"
@@ -107,11 +109,39 @@ export default function ProductDetails() {
                 onChange={(event) => setCount(Number(event.target.value))}
                 inputProps={{ min: 1 }}
                 className="w-full sm:w-24"
+                InputProps={{
+                  sx: {
+                    borderRadius: 2,
+                    backgroundColor: '#ffffff',
+                    color: '#091E27',
+                    '& fieldset': {
+                      borderColor: '#cbd9e1',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#9db4c5',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#091E27',
+                    },
+                  },
+                }}
               />
               <Button
                 variant="contained"
                 onClick={() => mutate({ ProductId: id, Count: count })}
                 className="w-full sm:w-auto"
+                sx={{
+                  minHeight: 40,
+                  borderRadius: 2,
+                  backgroundColor: '#091E27',
+                  color: '#ffffff',
+                  textTransform: 'none',
+                  fontWeight: 700,
+                  boxShadow: 'none',
+                  '&:hover': {
+                    backgroundColor: '#0f2d3a',
+                  },
+                }}
               >
                 Add to Cart
               </Button>

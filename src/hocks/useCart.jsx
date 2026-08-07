@@ -6,16 +6,16 @@ export default function useCart() {
   const getItems = async () => {
     try {
       const response = await AuthaxiosInstance.get("/Carts");
-
+      console.log('cart response', response.data);
       return response.data;
     } catch (error) {
-      console.log(error);
+      console.error('cart request failed', error);
       throw error;
     }
   };
 
   const query = useQuery({
-    queryKey: ["cart"],
+    queryKey: ['cart'],
     queryFn: getItems,
     staleTime: 1000 * 60 * 5,
   });

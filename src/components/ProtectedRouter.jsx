@@ -10,7 +10,7 @@ export default function ProtectedRouter({ children }) {
     return <Navigate to="/login" />;
   }
 
-  return children;
+  return <div className="min-h-screen bg-[#dbe7ee]">{children}</div>;
 }
 
 ProtectedRouter.propTypes = {
