@@ -15,15 +15,18 @@ import {
   School,
 } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LoginSchema } from "../../validation/LoginSchema";
 import { useState } from "react";
 import axiosInstance from "../../api/axiosinstans";
 import Logo from "../../components/logo/Logo"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import useAuthStore from "../../hocks/authStore";
+
 export default function Login() {
    const [serverErrors, setserverErrors] = useState([]);
+   const navigate = useNavigate();
+   const setToken = useAuthStore((state) => state.setToken);
     const {
       register,
       handleSubmit,
@@ -35,10 +38,10 @@ export default function Login() {
     const LoginForm = async (data) => {
       try {
         const response = await axiosInstance.post( `/auth/Account/Login`, data);
-        console.log(response.data.accessToken);
-        localStorage.setItem("accessToken", response.data.accessToken);
+        setToken(response.data.accessToken);
+        navigate('/');
       } catch (error) {
-        setserverErrors(error.response.data.errors);
+        setserverErrors(error.response?.data?.errors || ["Login failed"]);
       }
     };
   

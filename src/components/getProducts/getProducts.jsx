@@ -1,5 +1,6 @@
 import React from 'react';
 import { Alert, Button, Card, CardContent, CardMedia, Chip, CircularProgress, Rating, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 import useProducts from '../../hocks/useProducts';
 
 export default function GetProducts() {
@@ -72,6 +73,7 @@ export default function GetProducts() {
                 key={product?.id || `${productName || 'product'}-${index}`}
                 className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
               >
+                <Link to={`/products/${product?.id}`} className="block">
                 {imageUrl ? (
                   <CardMedia
                     component="img"
@@ -86,38 +88,39 @@ export default function GetProducts() {
                   </div>
                 )}
 
-                <CardContent className="flex flex-col gap-3 p-5">
-                  {categoryName ? (
-                    <Chip label={categoryName} size="small" className="w-fit" color="primary" variant="outlined" />
-                  ) : null}
-
-                  {productName ? (
-                    <Typography variant="h6" component="h3" className="font-semibold text-slate-800">
-                      {productName}
-                    </Typography>
-                  ) : null}
-
-                  {description ? (
-                    <Typography variant="body2" className="line-clamp-3 text-slate-600">
-                      {description}
-                    </Typography>
-                  ) : null}
-
-                  <div className="flex items-center gap-2">
-                    {ratingValue ? (
-                      <>
-                        <Rating value={Number(ratingValue)} precision={0.1} readOnly size="small" />
-                        {reviewsCount ? <span className="text-sm text-slate-500">({reviewsCount})</span> : null}
-                      </>
+                  <CardContent className="flex flex-col gap-3 p-5">
+                    {categoryName ? (
+                      <Chip label={categoryName} size="small" className="w-fit" color="primary" variant="outlined" />
                     ) : null}
-                  </div>
 
-                  {priceValue != null ? (
-                    <Typography variant="h6" className="mt-1 font-bold text-slate-900">
-                      {currency ? `${currency} ${priceValue}` : priceValue}
-                    </Typography>
-                  ) : null}
-                </CardContent>
+                    {productName ? (
+                      <Typography variant="h6" component="h3" className="font-semibold text-slate-800">
+                        {productName}
+                      </Typography>
+                    ) : null}
+
+                    {description ? (
+                      <Typography variant="body2" className="line-clamp-3 text-slate-600">
+                        {description}
+                      </Typography>
+                    ) : null}
+
+                    <div className="flex items-center gap-2">
+                      {ratingValue ? (
+                        <>
+                          <Rating value={Number(ratingValue)} precision={0.1} readOnly size="small" />
+                          {reviewsCount ? <span className="text-sm text-slate-500">({reviewsCount})</span> : null}
+                        </>
+                      ) : null}
+                    </div>
+
+                    {priceValue != null ? (
+                      <Typography variant="h6" className="mt-1 font-bold text-slate-900">
+                        {currency ? `${currency} ${priceValue}` : priceValue}
+                      </Typography>
+                    ) : null}
+                  </CardContent>
+                </Link>
               </Card>
             );
           })}

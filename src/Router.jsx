@@ -5,6 +5,8 @@ import Courses from "./pages/courses/Courses";
 import Register from "./pages/register/Register";
 import Cart from "./pages/cart/Cart";
 import Login from "./pages/login/Login";
+import ProductDetails from "./pages/productDetails/ProductDetails";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -29,8 +31,13 @@ const router = createBrowserRouter([
         {
             path:"/login",
             element: <Login/>
+        },
+        {
+            path:"/products/:id",
+            element: <ProductDetails/>
         }
     ]
   },
 ]);
+
 export default router;
