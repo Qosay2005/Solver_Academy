@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Alert, Button, Chip, CircularProgress, Divider, Rating, Typography } from '@mui/material';
+import { Alert, Button, Chip, CircularProgress, Divider, Rating, Typography, TextField } from '@mui/material';
 import useProduct from '../../hocks/useProduct';
+import useAddToCart from '../../hocks/useAddToCart';
 
 export default function ProductDetails() {
   const { id } = useParams();
   const { data, isLoading, isError, error, refetch } = useProduct(id);
+  const { mutate } = useAddToCart();
+  const [count, setCount] = useState(1);
 
   const product = data?.response?.data || data?.data || data || null;
   const imageUrl = product?.image || product?.imageUrl || product?.thumbnail || product?.coverImage;
@@ -93,6 +96,26 @@ export default function ProductDetails() {
                 {description}
               </Typography>
             ) : null}
+
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <TextField
+                type="number"
+                label="Count"
+                variant="outlined"
+                size="small"
+                value={count}
+                onChange={(event) => setCount(Number(event.target.value))}
+                inputProps={{ min: 1 }}
+                className="w-full sm:w-24"
+              />
+              <Button
+                variant="contained"
+                onClick={() => mutate({ ProductId: id, Count: count })}
+                className="w-full sm:w-auto"
+              >
+                Add to Cart
+              </Button>
+            </div>
           </div>
         </div>
       </div>

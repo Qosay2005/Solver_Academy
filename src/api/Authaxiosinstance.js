@@ -1,4 +1,5 @@
 import axios from "axios";
+import useAuthStore from "../hocks/authStore";
 
 const AuthaxiosInstance = axios.create({
   baseURL: `${import.meta.env.VITE_BURL}`,
@@ -9,7 +10,7 @@ const AuthaxiosInstance = axios.create({
 
 AuthaxiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("accessToken");
+    const token = useAuthStore.getState().token;
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
