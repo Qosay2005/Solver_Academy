@@ -1,21 +1,29 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate } from 'react-router-dom'
 import { Close, Menu } from '@mui/icons-material'
-import useAuthStore from "../../hocks/authStore"
+import { useTranslation } from 'react-i18next'
+import useAuthStore from '../../hocks/authStore'
 
 export default function Navbar() {
-  const token = useAuthStore((state) => state.token);
-  const logout = useAuthStore((state) => state.logout);
-  const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
+  const token = useAuthStore((state) => state.token)
+  const logout = useAuthStore((state) => state.logout)
+  const navigate = useNavigate()
+  const [isOpen, setIsOpen] = useState(false)
+  const { t, i18n } = useTranslation()
 
   const handleLogout = () => {
-    logout();
-    navigate('/login');
-    setIsOpen(false);
-  };
+    logout()
+    navigate('/login')
+    setIsOpen(false)
+  }
 
-  const closeMenu = () => setIsOpen(false);
+  const closeMenu = () => setIsOpen(false)
+
+  const toggleLanguage = () => {
+    const nextLanguage = i18n.language?.startsWith('ar') ? 'en' : 'ar'
+    i18n.changeLanguage(nextLanguage)
+    localStorage.setItem('appLang', nextLanguage)
+  }
 
   return (
     <nav className="border-b border-slate-200 bg-[#dbe7ee] px-4 py-3 sm:px-6 lg:px-8">
@@ -34,17 +42,25 @@ export default function Navbar() {
 
         <div className="hidden items-center gap-2 md:flex">
           <Link to='/' className="rounded-full px-3 py-2 text-sm font-medium text-[#1B3A4B] transition hover:bg-[#eef7fb]">
-            Home
+            {t('navbar.home')}
           </Link>
           <Link to='/courses' className="rounded-full px-3 py-2 text-sm font-medium text-[#1B3A4B] transition hover:bg-[#eef7fb]">
-            Courses
+            {t('navbar.courses')}
           </Link>
           <Link to='/register' className="rounded-full px-3 py-2 text-sm font-medium text-[#1B3A4B] transition hover:bg-[#eef7fb]">
-            Register
+            {t('navbar.register')}
           </Link>
           <Link to='/cart' className="rounded-full px-3 py-2 text-sm font-medium text-[#1B3A4B] transition hover:bg-[#eef7fb]">
-            Cart
+            {t('navbar.cart')}
           </Link>
+
+          <button
+            type="button"
+            onClick={toggleLanguage}
+            className="rounded-full border border-[#cbd9e1] px-3 py-2 text-sm font-medium text-[#1B3A4B] transition hover:bg-[#eef7fb]"
+          >
+            {i18n.language?.startsWith('ar') ? 'EN' : 'AR'}
+          </button>
 
           {token ? (
             <button
@@ -52,11 +68,11 @@ export default function Navbar() {
               onClick={handleLogout}
               className="rounded-full bg-[#091E27] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#0f2d3a]"
             >
-              Logout
+              {t('navbar.logout')}
             </button>
           ) : (
             <Link to='/login' className="rounded-full bg-[#091E27] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#0f2d3a]">
-              Login
+              {t('navbar.login')}
             </Link>
           )}
         </div>
@@ -65,17 +81,28 @@ export default function Navbar() {
       {isOpen ? (
         <div className="mx-auto mt-3 flex max-w-7xl flex-col gap-2 rounded-[24px] border border-slate-200 bg-white p-3 shadow-sm md:hidden">
           <Link to='/' onClick={closeMenu} className="rounded-xl px-3 py-2 text-sm font-medium text-[#1B3A4B] transition hover:bg-[#eef7fb]">
-            Home
+            {t('navbar.home')}
           </Link>
           <Link to='/courses' onClick={closeMenu} className="rounded-xl px-3 py-2 text-sm font-medium text-[#1B3A4B] transition hover:bg-[#eef7fb]">
-            Courses
+            {t('navbar.courses')}
           </Link>
           <Link to='/register' onClick={closeMenu} className="rounded-xl px-3 py-2 text-sm font-medium text-[#1B3A4B] transition hover:bg-[#eef7fb]">
-            Register
+            {t('navbar.register')}
           </Link>
           <Link to='/cart' onClick={closeMenu} className="rounded-xl px-3 py-2 text-sm font-medium text-[#1B3A4B] transition hover:bg-[#eef7fb]">
-            Cart
+            {t('navbar.cart')}
           </Link>
+
+          <button
+            type="button"
+            onClick={() => {
+              toggleLanguage()
+              closeMenu()
+            }}
+            className="rounded-xl border border-[#cbd9e1] px-3 py-2 text-left text-sm font-medium text-[#1B3A4B] transition hover:bg-[#eef7fb]"
+          >
+            {i18n.language?.startsWith('ar') ? 'English' : 'العربية'}
+          </button>
 
           {token ? (
             <button
@@ -83,11 +110,11 @@ export default function Navbar() {
               onClick={handleLogout}
               className="rounded-xl bg-[#091E27] px-3 py-2 text-left text-sm font-medium text-white transition hover:bg-[#0f2d3a]"
             >
-              Logout
+              {t('navbar.logout')}
             </button>
           ) : (
             <Link to='/login' onClick={closeMenu} className="rounded-xl bg-[#091E27] px-3 py-2 text-center text-sm font-medium text-white transition hover:bg-[#0f2d3a]">
-              Login
+              {t('navbar.login')}
             </Link>
           )}
         </div>
