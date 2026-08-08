@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { Alert, Button, Chip, CircularProgress, Divider, Rating, Typography, TextField } from '@mui/material';
+import { ArrowBackRounded, ImageNotSupportedOutlined } from '@mui/icons-material';
 import useProduct from '../../hocks/useProduct';
 import useAddToCart from '../../hocks/useAddToCart';
 import useGetReviews from '../../hocks/useGetReviews';
@@ -37,7 +38,7 @@ export default function ProductDetails() {
   if (isLoading) {
     return (
       <div className="flex min-h-[70vh] items-center justify-center px-4">
-        <CircularProgress />
+        <CircularProgress sx={{ color: '#DB4444' }} />
       </div>
     );
   }
@@ -70,23 +71,51 @@ export default function ProductDetails() {
   }
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <div className="overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-sm lg:grid lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="bg-slate-100">
+    <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <Link
+        to="/products"
+        className="mb-6 inline-flex items-center gap-1.5 text-sm font-semibold text-zinc-500 no-underline transition-colors hover:text-[#DB4444]"
+      >
+        <ArrowBackRounded sx={{ fontSize: 18 }} />
+        الرجوع للمنتجات
+      </Link>
+
+      <div className="overflow-hidden rounded-[26px] border border-zinc-200/80 bg-white shadow-[0_18px_40px_-20px_rgba(0,0,0,0.15)] lg:grid lg:grid-cols-[1.05fr_0.95fr]">
+        <div className="relative overflow-hidden bg-zinc-50">
           {imageUrl ? (
-            <img src={imageUrl} alt={productName || 'Product'} className="h-full min-h-[320px] w-full object-cover" />
+            <img
+              src={imageUrl}
+              alt={productName || 'Product'}
+              className="h-full min-h-[360px] w-full object-cover"
+            />
           ) : (
-            <div className="flex h-full min-h-[320px] items-center justify-center text-slate-400">
-              No image available
+            <div className="flex h-full min-h-[360px] flex-col items-center justify-center gap-2 text-zinc-400">
+              <ImageNotSupportedOutlined sx={{ fontSize: 32 }} />
+              <span className="text-sm font-medium">No image available</span>
             </div>
           )}
         </div>
 
         <div className="flex flex-col justify-between p-6 sm:p-8 lg:p-10">
           <div>
-            {categoryName ? <Chip label={categoryName} color="primary" variant="outlined" className="mb-4" /> : null}
+            {categoryName ? (
+              <Chip
+                label={categoryName}
+                size="small"
+                variant="outlined"
+                className="mb-4 w-fit"
+                sx={{
+                  borderColor: '#DB4444',
+                  color: '#DB4444',
+                  fontWeight: 600,
+                  fontSize: '0.72rem',
+                  borderRadius: '8px',
+                }}
+              />
+            ) : null}
+
             {productName ? (
-              <Typography variant="h4" component="h1" className="mb-3 font-semibold text-slate-800">
+              <Typography variant="h4" component="h1" className="mb-3 font-extrabold tracking-tight text-zinc-900">
                 {productName}
               </Typography>
             ) : null}
@@ -94,12 +123,12 @@ export default function ProductDetails() {
             <div className="mb-4 flex flex-wrap items-center gap-3">
               {ratingValue ? (
                 <div className="flex items-center gap-2">
-                  <Rating value={Number(ratingValue)} precision={0.1} readOnly />
-                  {reviewsCount ? <span className="text-sm text-slate-500">({reviewsCount})</span> : null}
+                  <Rating value={Number(ratingValue)} precision={0.1} readOnly sx={{ color: '#DB4444' }} />
+                  {reviewsCount ? <span className="text-sm text-zinc-400">({reviewsCount})</span> : null}
                 </div>
               ) : null}
               {priceValue != null ? (
-                <Typography variant="h5" className="font-bold text-slate-900">
+                <Typography variant="h5" className="font-extrabold text-zinc-900">
                   {currency ? `${currency} ${priceValue}` : priceValue}
                 </Typography>
               ) : null}
@@ -108,83 +137,76 @@ export default function ProductDetails() {
             <Divider className="mb-4" />
 
             {description ? (
-              <Typography variant="body1" className="leading-7 text-slate-600">
+              <Typography variant="body1" className="leading-7 text-zinc-500">
                 {description}
               </Typography>
             ) : null}
+          </div>
 
-            <div className="mt-6 flex flex-col gap-3 rounded-[24px] border border-slate-200 bg-[#eef7fb] p-4 sm:flex-row sm:items-center">
-              <TextField
-                type="number"
-                label="Count"
-                variant="outlined"
-                size="small"
-                value={count}
-                onChange={(event) => setCount(Number(event.target.value))}
-                inputProps={{ min: 1 }}
-                className="w-full sm:w-24"
-                InputProps={{
-                  sx: {
-                    borderRadius: 2,
-                    backgroundColor: '#ffffff',
-                    color: '#091E27',
-                    '& fieldset': {
-                      borderColor: '#cbd9e1',
-                    },
-                    '&:hover fieldset': {
-                      borderColor: '#9db4c5',
-                    },
-                    '&.Mui-focused fieldset': {
-                      borderColor: '#091E27',
-                    },
-                  },
-                }}
-              />
-              <Button
-                variant="contained"
-                onClick={() => mutate({ ProductId: id, Count: count })}
-                className="w-full sm:w-auto"
-                sx={{
-                  minHeight: 40,
-                  borderRadius: 2,
-                  backgroundColor: '#091E27',
-                  color: '#ffffff',
-                  textTransform: 'none',
-                  fontWeight: 700,
-                  boxShadow: 'none',
-                  '&:hover': {
-                    backgroundColor: '#0f2d3a',
-                  },
-                }}
-              >
-                Add to Cart
-              </Button>
-            </div>
+          <div className="mt-6 flex flex-col gap-3 rounded-[20px] border border-zinc-200/80 bg-zinc-50 p-4 sm:flex-row sm:items-center">
+            <TextField
+              type="number"
+              label="Count"
+              variant="outlined"
+              size="small"
+              value={count}
+              onChange={(event) => setCount(Number(event.target.value))}
+              inputProps={{ min: 1 }}
+              className="w-full sm:w-24"
+              InputProps={{
+                sx: {
+                  borderRadius: '10px',
+                  backgroundColor: '#ffffff',
+                  '& fieldset': { borderColor: '#e4e4e7' },
+                  '&:hover fieldset': { borderColor: '#DB4444' },
+                  '&.Mui-focused fieldset': { borderColor: '#DB4444' },
+                },
+              }}
+            />
+            <Button
+              variant="contained"
+              onClick={() => mutate({ ProductId: id, Count: count })}
+              fullWidth
+              sx={{
+                minHeight: 44,
+                borderRadius: '12px',
+                backgroundColor: '#DB4444',
+                color: '#ffffff',
+                textTransform: 'none',
+                fontWeight: 700,
+                boxShadow: 'none',
+                '&:hover': { backgroundColor: '#c23a3a', boxShadow: 'none' },
+              }}
+            >
+              أضف للسلة
+            </Button>
           </div>
         </div>
       </div>
 
-      <div className="mt-8 rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-        <Typography variant="h5" className="mb-4 font-semibold text-slate-800">Reviews</Typography>
+      <div className="mt-8 rounded-[26px] border border-zinc-200/80 bg-white p-6 shadow-sm sm:p-8">
+        <Typography variant="h5" className="mb-4 font-extrabold text-zinc-900">المراجعات</Typography>
 
         <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="space-y-3">
-            {reviewsLoading ? <CircularProgress size={24} /> : null}
+            {reviewsLoading ? <CircularProgress size={24} sx={{ color: '#DB4444' }} /> : null}
             {reviewsError ? <Alert severity="error">Unable to load reviews.</Alert> : null}
-            {reviews.length === 0 && !reviewsLoading ? <Typography variant="body2" className="text-slate-500">No reviews yet. Be the first to leave one.</Typography> : null}
+            {reviews.length === 0 && !reviewsLoading ? (
+              <Typography variant="body2" className="text-zinc-500">لا توجد مراجعات بعد. كن أول من يضيف مراجعة.</Typography>
+            ) : null}
             {reviews.map((review, index) => (
-              <div key={review?.id || index} className="rounded-[16px] border border-slate-200 bg-slate-50 p-4">
+              <div key={review?.id || index} className="rounded-[16px] border border-zinc-200/80 bg-zinc-50 p-4">
                 <div className="mb-2 flex items-center gap-2">
-                  <Rating value={Number(review?.rating || 0)} readOnly size="small" />
-                  <Typography variant="body2" className="text-slate-500">{review?.userName || 'User'}</Typography>
+                  <Rating value={Number(review?.rating || 0)} readOnly size="small" sx={{ color: '#DB4444' }} />
+                  <Typography variant="body2" className="text-zinc-500">{review?.userName || 'User'}</Typography>
                 </div>
-                <Typography variant="body2" className="text-slate-600">{review?.comment || review?.message || 'No comment provided.'}</Typography>
+                <Typography variant="body2" className="text-zinc-600">{review?.comment || review?.message || 'No comment provided.'}</Typography>
               </div>
             ))}
           </div>
 
-          <div className="rounded-[20px] border border-slate-200 bg-[#eef7fb] p-4">
-            <Typography variant="h6" className="mb-3 font-semibold text-slate-800">Leave a Review</Typography>
+          <div className="rounded-[20px] border border-zinc-200/80 bg-zinc-50 p-4">
+            <Typography variant="h6" className="mb-3 font-bold text-zinc-900">أضف مراجعتك</Typography>
             <div className="space-y-3">
               <TextField
                 select
@@ -193,6 +215,12 @@ export default function ProductDetails() {
                 onChange={(event) => setReviewForm({ ...reviewForm, rating: Number(event.target.value) })}
                 SelectProps={{ native: true }}
                 fullWidth
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '10px',
+                    backgroundColor: '#fff',
+                  },
+                }}
               >
                 {[5, 4, 3, 2, 1].map((value) => <option key={value} value={value}>{value} Stars</option>)}
               </TextField>
@@ -203,17 +231,31 @@ export default function ProductDetails() {
                 value={reviewForm.comment}
                 onChange={(event) => setReviewForm({ ...reviewForm, comment: event.target.value })}
                 fullWidth
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '10px',
+                    backgroundColor: '#fff',
+                  },
+                }}
               />
               <Button
                 variant="contained"
+                fullWidth
                 onClick={() => addReviewMutation.mutate({ rating: reviewForm.rating, comment: reviewForm.comment })}
                 disabled={addReviewMutation.isPending}
-                sx={{ borderRadius: 2, backgroundColor: '#091E27', textTransform: 'none' }}
+                sx={{
+                  borderRadius: '12px',
+                  backgroundColor: '#DB4444',
+                  textTransform: 'none',
+                  fontWeight: 700,
+                  boxShadow: 'none',
+                  '&:hover': { backgroundColor: '#c23a3a' },
+                }}
               >
-                {addReviewMutation.isPending ? <CircularProgress size={20} color="inherit" /> : 'Submit Review'}
+                {addReviewMutation.isPending ? <CircularProgress size={20} color="inherit" /> : 'إرسال المراجعة'}
               </Button>
               {addReviewMutation.isError ? <Alert severity="error">{addReviewMutation.error?.message || 'Unable to submit review.'}</Alert> : null}
-              {addReviewMutation.isSuccess ? <Alert severity="success">Review submitted successfully.</Alert> : null}
+              {addReviewMutation.isSuccess ? <Alert severity="success">تم إرسال المراجعة بنجاح.</Alert> : null}
             </div>
           </div>
         </div>
