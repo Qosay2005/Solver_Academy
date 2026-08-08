@@ -2,7 +2,7 @@ import axios from "axios";
 import useAuthStore from "../hocks/authStore";
 
 const AuthaxiosInstance = axios.create({
-  baseURL: `${import.meta.env.VITE_BURL || "https://knowledgeshop.runasp.net/api"}`,
+  baseURL: `${import.meta.env.VITE_BURL }`,
   headers: {
     "Accept-language": "en",
   },

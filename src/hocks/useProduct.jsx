@@ -18,7 +18,6 @@ export default function useProduct(id) {
     queryKey: ['product', id],
     queryFn: getProduct,
     staleTime: 1000 * 60 * 5,
-    enabled: Boolean(id),
   });
 
   return query;

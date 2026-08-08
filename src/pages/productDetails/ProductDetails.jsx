@@ -14,7 +14,6 @@ export default function ProductDetails() {
   const addReviewMutation = useAddReview(id);
   const [count, setCount] = useState(1);
   const [reviewForm, setReviewForm] = useState({ rating: 5, comment: '' });
-
   const product = data?.response || data?.data || data || null;
   const imageUrl = product?.image || product?.imageUrl || product?.thumbnail || product?.coverImage;
   const categoryName = product?.category?.name || product?.categoryName || product?.category;
@@ -72,11 +71,11 @@ export default function ProductDetails() {
   return (
     <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <Link
-        to="/products"
+        to="/"
         className="mb-6 inline-flex items-center gap-1.5 text-sm font-semibold text-zinc-500 no-underline transition-colors hover:text-[#DB4444]"
       >
         <ArrowBackRounded sx={{ fontSize: 18 }} />
-        الرجوع للمنتجات
+     الرجوع للصفحة الرئيسية
       </Link>
 
       <div className="overflow-hidden rounded-[26px] border border-zinc-200/80 bg-white shadow-[0_18px_40px_-20px_rgba(0,0,0,0.15)] lg:grid lg:grid-cols-[1.05fr_0.95fr]">
