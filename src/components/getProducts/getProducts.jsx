@@ -1,5 +1,16 @@
 import React from 'react';
-import { Alert, Button, Card, CardContent, CardMedia, Chip, CircularProgress, Rating, Typography } from '@mui/material';
+import {
+  Alert,
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  Chip,
+  CircularProgress,
+  Rating,
+  Typography,
+} from '@mui/material';
+import { ImageNotSupportedOutlined, Inventory2Outlined, ArrowForwardRounded } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import useProducts from '../../hocks/useProducts';
 
@@ -17,7 +28,7 @@ export default function GetProducts() {
   if (isLoading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center px-4">
-        <CircularProgress />
+        <CircularProgress sx={{ color: '#DB4444' }} />
       </div>
     );
   }
@@ -40,21 +51,30 @@ export default function GetProducts() {
   }
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+    <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <Typography variant="h5" component="h2" className="font-semibold text-slate-800">
+          <div className="mb-3 flex items-center gap-3">
+            <span className="h-7 w-4 rounded-[3px] bg-gradient-to-b from-[#FF6B6B] to-[#DB4444]" />
+            <Typography variant="subtitle2" className="font-bold uppercase tracking-[0.12em] text-[#DB4444]">
+              Our Products
+            </Typography>
+          </div>
+          <Typography variant="h4" component="h2" className="text-2xl font-extrabold tracking-tight text-zinc-900 sm:text-3xl">
             Featured Products
           </Typography>
-          <Typography variant="body2" className="text-slate-500">
+          <Typography variant="body2" className="mt-1 text-zinc-500">
             Handpicked picks with modern design and great value.
           </Typography>
         </div>
       </div>
 
       {products.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-8 text-center text-slate-500">
-          No products available right now.
+        <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-zinc-200 bg-zinc-50 p-12 text-center">
+          <Inventory2Outlined sx={{ fontSize: 34 }} className="text-zinc-300" />
+          <Typography variant="body1" className="font-medium text-zinc-500">
+            No products available right now.
+          </Typography>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
@@ -71,56 +91,102 @@ export default function GetProducts() {
             return (
               <Card
                 key={product?.id || `${productName || 'product'}-${index}`}
-                className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                elevation={0}
+                className="group flex flex-col overflow-hidden rounded-[22px] border border-zinc-200/80 bg-white transition-all duration-300 ease-out hover:-translate-y-1 hover:border-transparent hover:shadow-[0_18px_40px_-14px_rgba(219,68,68,0.35)]"
               >
-                <Link to={`/products/${product?.id}`} className="block">
-                {imageUrl ? (
-                  <CardMedia
-                    component="img"
-                    image={imageUrl}
-                    alt={productName || 'Product image'}
-                    loading="lazy"
-                    className="h-48 w-full object-cover transition-transform duration-300 hover:scale-105"
-                  />
-                ) : (
-                  <div className="flex h-48 items-center justify-center bg-slate-100 text-sm text-slate-400">
-                    No image available
+                <Link to={`/products/${product?.id}`} className="block no-underline">
+                  <div className="overflow-hidden bg-zinc-50">
+                    {imageUrl ? (
+                      <CardMedia
+                        component="img"
+                        image={imageUrl}
+                        alt={productName || 'Product image'}
+                        loading="lazy"
+                        className="h-48 w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="flex h-48 flex-col items-center justify-center gap-2 bg-zinc-100 text-zinc-400">
+                        <ImageNotSupportedOutlined sx={{ fontSize: 28 }} />
+                        <span className="text-xs font-medium">No image available</span>
+                      </div>
+                    )}
                   </div>
-                )}
+                </Link>
 
-                  <CardContent className="flex flex-col gap-3 p-5">
+                <CardContent className="flex flex-1 flex-col gap-2.5 p-5">
+                  <Link to={`/products/${product?.id}`} className="block no-underline">
                     {categoryName ? (
-                      <Chip label={categoryName} size="small" className="w-fit" color="primary" variant="outlined" />
+                      <Chip
+                        label={categoryName}
+                        size="small"
+                        variant="outlined"
+                        className="mb-1 w-fit"
+                        sx={{
+                          borderColor: '#DB4444',
+                          color: '#DB4444',
+                          fontWeight: 600,
+                          fontSize: '0.7rem',
+                          borderRadius: '8px',
+                        }}
+                      />
                     ) : null}
 
                     {productName ? (
-                      <Typography variant="h6" component="h3" className="font-semibold text-slate-800">
+                      <Typography
+                        variant="h6"
+                        component="h3"
+                        className="font-bold leading-snug text-zinc-900 transition-colors duration-200 group-hover:text-[#DB4444]"
+                      >
                         {productName}
                       </Typography>
                     ) : null}
 
                     {description ? (
-                      <Typography variant="body2" className="line-clamp-3 text-slate-600">
+                      <Typography variant="body2" className="line-clamp-2 text-zinc-500">
                         {description}
                       </Typography>
                     ) : null}
 
-                    <div className="flex items-center gap-2">
-                      {ratingValue ? (
-                        <>
-                          <Rating value={Number(ratingValue)} precision={0.1} readOnly size="small" />
-                          {reviewsCount ? <span className="text-sm text-slate-500">({reviewsCount})</span> : null}
-                        </>
-                      ) : null}
-                    </div>
+                    {ratingValue ? (
+                      <div className="mt-1 flex items-center gap-2">
+                        <Rating value={Number(ratingValue)} precision={0.1} readOnly size="small" />
+                        {reviewsCount ? (
+                          <span className="text-sm text-zinc-400">({reviewsCount})</span>
+                        ) : null}
+                      </div>
+                    ) : null}
 
                     {priceValue != null ? (
-                      <Typography variant="h6" className="mt-1 font-bold text-slate-900">
+                      <Typography variant="h6" className="mt-1 font-extrabold text-zinc-900">
                         {currency ? `${currency} ${priceValue}` : priceValue}
                       </Typography>
                     ) : null}
-                  </CardContent>
-                </Link>
+                  </Link>
+
+                  {/* زر عرض التفاصيل */}
+                  <Button
+                    component={Link}
+                    to={`/products/${product?.id}`}
+                    fullWidth
+                    endIcon={<ArrowForwardRounded sx={{ fontSize: 18 }} />}
+                    sx={{
+                      mt: 1.5,
+                      borderRadius: '12px',
+                      textTransform: 'none',
+                      fontWeight: 700,
+                      py: 1,
+                      color: '#DB4444',
+                      border: '1.5px solid #DB4444',
+                      transition: 'all .25s ease',
+                      '&:hover': {
+                        backgroundColor: '#DB4444',
+                        color: '#fff',
+                      },
+                    }}
+                  >
+                    عرض التفاصيل
+                  </Button>
+                </CardContent>
               </Card>
             );
           })}
