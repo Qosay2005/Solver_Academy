@@ -6,7 +6,6 @@ import useProduct from '../../hocks/useProduct';
 import useAddToCart from '../../hocks/useAddToCart';
 import useGetReviews from '../../hocks/useGetReviews';
 import useAddReview from '../../hocks/useAddReview';
-
 export default function ProductDetails() {
   const { id } = useParams();
   const { data, isLoading, isError, error, refetch } = useProduct(id);
@@ -208,22 +207,34 @@ export default function ProductDetails() {
           <div className="rounded-[20px] border border-zinc-200/80 bg-zinc-50 p-4">
             <Typography variant="h6" className="mb-3 font-bold text-zinc-900">أضف مراجعتك</Typography>
             <div className="space-y-3">
-              <TextField
-                select
-                label="Rating"
-                value={reviewForm.rating}
-                onChange={(event) => setReviewForm({ ...reviewForm, rating: Number(event.target.value) })}
-                SelectProps={{ native: true }}
-                fullWidth
-                sx={{
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: '10px',
-                    backgroundColor: '#fff',
-                  },
-                }}
-              >
-                {[5, 4, 3, 2, 1].map((value) => <option key={value} value={value}>{value} Stars</option>)}
-              </TextField>
+             <div>
+  <Typography variant="body2" className="mb-1.5 font-semibold text-zinc-700">
+    التقييم
+  </Typography>
+  <div className="flex items-center gap-2">
+    <Rating
+      value={reviewForm.rating}
+      onChange={(event, newValue) => {
+        // لو المستخدم ضغط بنفس مكان النجمة المختارة، newValue بترجع null
+        // فبنحافظ على آخر قيمة صحيحة بدل ما تصفر القيمة
+        if (newValue !== null) {
+          setReviewForm({ ...reviewForm, rating: newValue });
+        }
+      }}
+      size="large"
+      sx={{
+        color: '#DB4444',
+        '& .MuiRating-iconEmpty': {
+          color: '#DB4444',
+          opacity: 0.35,
+        },
+      }}
+    />
+    <Typography variant="body2" className="font-medium text-zinc-500">
+      {reviewForm.rating} / 5
+    </Typography>
+  </div>
+</div>
               <TextField
                 label="Comment"
                 multiline

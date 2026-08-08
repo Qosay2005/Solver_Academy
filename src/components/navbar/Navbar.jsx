@@ -54,7 +54,6 @@ export default function Navbar() {
 
   const navLinks = [
     { to: '/', label: t('navbar.home') },
-    { to: '/courses', label: t('navbar.courses') },
     { to: '/shop', label: 'Shop' },
   ]
 
