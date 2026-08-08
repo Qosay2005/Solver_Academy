@@ -22,11 +22,14 @@ import axiosInstance from "../../api/axiosinstans";
 import Logo from "../../components/logo/Logo"
 import { Link, useNavigate } from "react-router-dom";
 import useAuthStore from "../../hocks/authStore";
+import useThemeStore from '../../hocks/useThemeStore';
 
 export default function Login() {
    const [serverErrors, setserverErrors] = useState([]);
    const navigate = useNavigate();
    const setToken = useAuthStore((state) => state.setToken);
+   const mode = useThemeStore((state) => state.mode);
+   const isDark = mode === 'dark';
     const {
       register,
       handleSubmit,
@@ -46,14 +49,14 @@ export default function Login() {
     };
   
     return (
-      <Box className="min-h-screen bg-[#dbe7ee] px-4 py-6 sm:px-6 flex flex-col justify-between">
+      <Box className={isDark ? "min-h-screen bg-slate-900 px-4 py-6 sm:px-6 flex flex-col justify-between" : "min-h-screen bg-[#dbe7ee] px-4 py-6 sm:px-6 flex flex-col justify-between"}>
         <Box className="flex flex-1 items-center justify-center">
           <Box className="w-full max-w-[390px]">
             <Box className="mb-5 flex flex-col items-center gap-3 text-center">
             <Logo/>
             </Box>
   
-            <Box className="rounded-[28px] bg-white p-5 shadow-[0_10px_35px_rgba(9,30,39,0.08)] sm:p-6">
+            <Box className={isDark ? "rounded-[28px] bg-slate-800 p-5 shadow-[0_10px_35px_rgba(0,0,0,0.25)] sm:p-6" : "rounded-[28px] bg-white p-5 shadow-[0_10px_35px_rgba(9,30,39,0.08)] sm:p-6"}>
               <Box className="mb-4">
                 <Typography
                   sx={{
