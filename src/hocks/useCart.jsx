@@ -8,7 +8,7 @@ export default function useCart() {
   };
 
   return useQuery({
-    queryKey: ['cart'],
+    queryKey: ['cart','en'],
     queryFn: getItems,
     staleTime: 1000 * 60 * 5,
     retry: 1,
