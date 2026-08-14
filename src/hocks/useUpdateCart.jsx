@@ -1,27 +1,27 @@
-import React from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import AuthaxiosInstance from '../api/Authaxiosinstance';
 
 export default function useUpdateCart() {
   const queryClient = useQueryClient();
 
-  const updateCart = async (values) => {
-    try {
-      const response = await AuthaxiosInstance.put(`/Carts/${values.id}`, { Count: values.count });
-      console.log('update cart response', response.data);
-      return response.data;
-    } catch (error) {
-      console.error('update cart failed', error);
-      throw error;
+  const updateCart = async ({ productId, count }) => {
+    if (!productId) {
+      throw new Error('Product id is missing.');
     }
+
+    const response = await AuthaxiosInstance.put(`/Carts/${productId}`, { Count: count });
+    return response.data;
   };
 
-  const mutation = useMutation({
+  return useMutation({
     mutationFn: updateCart,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['cart'] });
+    onSuccess: (data) => {
+      console.log('update cart success', data);
+      queryClient.invalidateQueries({ queryKey: ['cart'], refetchType: 'active' });
+      queryClient.refetchQueries({ queryKey: ['cart'] });
+    },
+    onError: (error) => {
+      console.error('update cart failed', error?.response?.data || error?.message);
     },
   });
-
-  return mutation;
 }
