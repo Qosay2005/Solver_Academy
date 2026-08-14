@@ -8,7 +8,6 @@ const resources = {
     translation: {
       navbar: {
         home: 'Home',
-        courses: 'Courses',
         register: 'Register',
         cart: 'Cart',
         login: 'Login',
@@ -45,7 +44,6 @@ const resources = {
     translation: {
       navbar: {
         home: 'الرئيسية',
-        courses: 'الدورات',
         register: 'إنشاء حساب',
         cart: 'السلة',
         login: 'تسجيل الدخول',

@@ -9,7 +9,7 @@ export default function useUpdateCart() {
       throw new Error('Product id is missing.');
     }
 
-    const response = await AuthaxiosInstance.put(`/Carts/${productId}`, { Count: count });
+    const response = await AuthaxiosInstance.patch(`/Carts/${productId}`, { Count: count });
     return response.data;
   };
 
