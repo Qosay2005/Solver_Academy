@@ -6,20 +6,39 @@ import {
   Card,
   CardContent,
   CircularProgress,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   TextField,
   Typography,
 } from '@mui/material';
 import useCheckout from '../../hocks/useCheckout';
 import useCart from '../../hocks/useCart';
 
+const PAYMENT_METHODS = [
+  { value: 'Visa', label: 'Visa' }
+
+];
+
 export default function Checkout() {
   const { data, isLoading, isError } = useCart();
   const checkoutMutation = useCheckout();
   const [address, setAddress] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('Visa');
+  const [touched, setTouched] = useState(false);
 
   // نفس شكل الـ response الفعلي المستخدم في Cart.jsx: { items: [...], cartTotal }
   const cartItems = Array.isArray(data?.items) ? data.items : [];
   const cartTotal = data?.cartTotal ?? cartItems.reduce((sum, item) => sum + (item?.totalPrice || 0), 0);
+
+  const handleConfirmOrder = () => {
+    setTouched(true);
+    if (!address.trim()) {
+      return;
+    }
+    checkoutMutation.mutate({ address, PaymentMethod: paymentMethod });
+  };
 
   if (isLoading) {
     return (
@@ -69,6 +88,9 @@ export default function Checkout() {
             <TextField
               label="Delivery Address"
               fullWidth
+              required
+              error={touched && !address.trim()}
+              helperText={touched && !address.trim() ? 'Address is required' : ''}
               value={address}
               onChange={(event) => setAddress(event.target.value)}
               sx={{
@@ -79,6 +101,31 @@ export default function Checkout() {
                 '& label.Mui-focused': { color: '#DB4444' },
               }}
             />
+
+            <FormControl
+              fullWidth
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: '12px',
+                  '&.Mui-focused fieldset': { borderColor: '#DB4444' },
+                },
+                '& label.Mui-focused': { color: '#DB4444' },
+              }}
+            >
+              <InputLabel id="payment-method-label">Payment Method</InputLabel>
+              <Select
+                labelId="payment-method-label"
+                label="Payment Method"
+                value={paymentMethod}
+                onChange={(event) => setPaymentMethod(event.target.value)}
+              >
+                {PAYMENT_METHODS.map((method) => (
+                  <MenuItem key={method.value} value={method.value}>
+                    {method.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
             <div className="rounded-[16px] border border-zinc-200 bg-zinc-50 p-4">
               <Typography variant="subtitle1" className="font-bold text-zinc-900">
@@ -124,7 +171,7 @@ export default function Checkout() {
             <Button
               fullWidth
               variant="contained"
-              onClick={() => checkoutMutation.mutate({ address })}
+              onClick={handleConfirmOrder}
               disabled={checkoutMutation.isPending || cartItems.length === 0}
               sx={{
                 borderRadius: '12px',
@@ -140,15 +187,11 @@ export default function Checkout() {
             </Button>
 
             {checkoutMutation.isError ? (
-              <Alert severity="error">{checkoutMutation.error?.message || 'Checkout failed.'}</Alert>
-            ) : null}
-
-            {checkoutMutation.isSuccess && checkoutMutation.data?.success === false ? (
-              <Alert severity="error">{checkoutMutation.data?.message || 'Checkout failed.'}</Alert>
-            ) : null}
-
-            {checkoutMutation.isSuccess && checkoutMutation.data?.success !== false ? (
-              <Alert severity="success">Order placed successfully.</Alert>
+              <Alert severity="error">
+                {checkoutMutation.error?.response?.data?.message ||
+                  checkoutMutation.error?.message ||
+                  'Checkout failed. Please try again.'}
+              </Alert>
             ) : null}
           </CardContent>
         </Card>

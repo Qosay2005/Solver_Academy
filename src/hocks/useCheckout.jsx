@@ -1,23 +1,28 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import AuthaxiosInstance from '../api/Authaxiosinstance';
-import useClearCart from './useClearCart';
 
 export default function useCheckout() {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const clearCartMutation = useClearCart();
+
+  const checkout = async (payload) => {
+    const response = await AuthaxiosInstance.post('/Checkouts', payload);
+    return response.data;
+  };
 
   return useMutation({
-    mutationFn: async (payload = {}) => {
-      const response = await AuthaxiosInstance.post('/Checkouts', payload);
-      return response.data;
-    },
-    onSuccess: (data) => {
-      // السيرفر بيرجع 200 حتى لو الدفع فشل، والفشل بيتحدد من data.success
-      if (data?.success === false) return;
+    mutationFn: checkout,
+    onSuccess: (response) => {
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
 
-      clearCartMutation.mutate();
-      navigate('/checkout/success');
+       if (response?.url) {
+        window.location.href = response.url;
+        return;
+      }
+
+      navigate('/checkout-success');
+      console.log(response.data.url)
     },
   });
 }

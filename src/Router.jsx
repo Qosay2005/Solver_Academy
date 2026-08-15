@@ -22,7 +22,7 @@ const router = createBrowserRouter([
       { path: '/shop', element: <Shop /> },
       { path: '/cart', element: <ProtectedRouter><Cart /></ProtectedRouter> },
       { path: '/checkout', element: <ProtectedRouter><Checkout /></ProtectedRouter> },
-      { path: '/checkout/success', element: <ProtectedRouter><CheckoutSuccess /></ProtectedRouter> },
+      { path: '/checkout-success', element: <ProtectedRouter><CheckoutSuccess /></ProtectedRouter> },
       { path: '/profile', element: <ProtectedRouter><ProfileLayout /></ProtectedRouter> },
       { path: '/login', element: <Login /> },
       { path: '/forgot-password', element: <ForgotPassword /> },
