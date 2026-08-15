@@ -20,7 +20,7 @@ import { LoginSchema } from "../../validation/LoginSchema";
 import { useState } from "react";
 import axiosInstance from "../../api/axiosinstans";
 import Logo from "../../components/logo/Logo"
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuthStore from "../../hocks/authStore";
 import useThemeStore from '../../hocks/useThemeStore';
 import { useTranslation } from 'react-i18next';
@@ -28,6 +28,8 @@ import { useTranslation } from 'react-i18next';
 export default function Login() {
    const [serverErrors, setserverErrors] = useState([]);
    const navigate = useNavigate();
+   const location = useLocation();
+   const redirectPath = location.state?.from?.pathname || '/';
    const setToken = useAuthStore((state) => state.setToken);
    const mode = useThemeStore((state) => state.mode);
    const isDark = mode === 'dark';
@@ -44,7 +46,7 @@ export default function Login() {
       try {
         const response = await axiosInstance.post( `/auth/Account/Login`, data);
         setToken(response.data.accessToken);
-        navigate('/');
+        navigate(redirectPath, { replace: true });
       } catch (error) {
         setserverErrors(error.response?.data?.errors || ["Login failed"]);
       }

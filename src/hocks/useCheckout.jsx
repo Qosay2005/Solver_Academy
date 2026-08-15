@@ -15,6 +15,7 @@ export default function useCheckout() {
     mutationFn: checkout,
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
 
        if (response?.url) {
         window.location.href = response.url;

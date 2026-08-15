@@ -188,6 +188,10 @@ const resources = {
       profile: {
         title: 'My Profile',
         subtitle: 'Manage your account details and view your orders.',
+        tabs: {
+          info: 'Profile Info',
+          orders: 'My Orders',
+        },
         info: {
           title: 'Profile Information',
           fullName: 'Full Name',
@@ -211,6 +215,7 @@ const resources = {
           cancelled: 'Cancelled',
           viewDetails: 'View Details',
           loadError: 'Unable to load order history.',
+          shopMore: 'Start Shopping',
         },
       },
 
@@ -464,6 +469,10 @@ const resources = {
       profile: {
         title: 'ملفي الشخصي',
         subtitle: 'أدر بيانات حسابك واعرض طلباتك.',
+        tabs: {
+          info: 'معلومات الملف',
+          orders: 'طلباتي',
+        },
         info: {
           title: 'معلومات الملف الشخصي',
           fullName: 'الاسم الكامل',
@@ -487,6 +496,7 @@ const resources = {
           cancelled: 'ملغى',
           viewDetails: 'عرض التفاصيل',
           loadError: 'فشل تحميل سجل الطلبات.',
+          shopMore: 'ابدأ التسوق',
         },
       },
 

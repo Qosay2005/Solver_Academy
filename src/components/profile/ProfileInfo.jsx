@@ -1,35 +1,184 @@
-import React, { useState } from 'react';
-import { Alert, Button, Card, CardContent, CircularProgress, TextField, Typography } from '@mui/material';
-import useProfile from '../../hocks/useProfile';
+import React, { useEffect, useState } from 'react';
+import {
+  Alert,
+  Button,
+  CircularProgress,
+  InputAdornment,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { EmailOutlined, Person, PhoneOutlined } from '@mui/icons-material';
+import { useTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
+import { useUpdateProfile } from '../../hocks/useProfile';
+import useThemeStore from '../../hocks/useThemeStore';
 
-export default function ProfileInfo() {
-  const { data, isLoading, isError, error } = useProfile();
-  const profile = data?.response || data?.data || data || {};
+export default function ProfileInfo({ profile, isRefreshing }) {
+  const { t } = useTranslation();
+  const mode = useThemeStore((state) => state.mode);
+  const isDark = mode === 'dark';
+  const { mutate: updateProfile, isPending, isSuccess, isError, error, reset } = useUpdateProfile();
+
   const [form, setForm] = useState({
-    fullName: profile?.name || '',
-    email: profile?.email || '',
-    phone: profile?.phone || '',
+    fullName: profile.fullName,
+    email: profile.email,
+    phone: profile.phone,
   });
 
-  if (isLoading) {
-    return <div className="flex justify-center py-8"><CircularProgress /></div>;
-  }
+  useEffect(() => {
+    setForm({
+      fullName: profile.fullName,
+      email: profile.email,
+      phone: profile.phone,
+    });
+  }, [profile.fullName, profile.email, profile.phone]);
 
-  if (isError) {
-    return <Alert severity="error">{error?.message || 'Unable to load profile.'}</Alert>;
-  }
+  const handleChange = (field) => (event) => {
+    reset();
+    setForm((prev) => ({ ...prev, [field]: event.target.value }));
+  };
+
+  const handleSave = (event) => {
+    event.preventDefault();
+    updateProfile({
+      fullName: form.fullName.trim(),
+      email: form.email.trim(),
+      phoneNumber: form.phone.trim(),
+    });
+  };
+
+  const textFieldSx = {
+    '& .MuiInputLabel-root': {
+      color: isDark ? '#94a3b8' : '#6b7280',
+    },
+    '& .MuiInputLabel-root.Mui-focused': {
+      color: isDark ? '#f8fafc' : '#091E27',
+    },
+    '& .MuiOutlinedInput-root': {
+      borderRadius: 2,
+      backgroundColor: isDark ? '#0f172a' : '#eef7fb',
+      color: isDark ? '#f8fafc' : '#091E27',
+      '& fieldset': {
+        borderColor: isDark ? '#334155' : '#cbd9e1',
+      },
+      '&:hover fieldset': {
+        borderColor: isDark ? '#475569' : '#9db4c5',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: '#091E27',
+      },
+    },
+  };
 
   return (
-    <Card className="rounded-[24px] border border-slate-200 bg-white shadow-sm">
-      <CardContent className="space-y-4 p-6">
-        <Typography variant="h6" className="font-semibold text-slate-800">Profile Information</Typography>
+    <div className="space-y-5">
+      <Typography variant="h6" className={`font-bold ${isDark ? 'text-slate-100' : 'text-zinc-900'}`}>
+        {t('profile.info.title')}
+      </Typography>
+
+      {isSuccess ? (
+        <Alert severity="success" onClose={() => reset()}>
+          {t('profile.info.changesSaved')}
+        </Alert>
+      ) : null}
+
+      {isError ? (
+        <Alert severity="error" onClose={() => reset()}>
+          {error?.response?.data?.message
+            || error?.response?.data?.errors?.[0]
+            || error?.message
+            || t('profile.info.saveFailed')}
+        </Alert>
+      ) : null}
+
+      <form onSubmit={handleSave} className="space-y-4">
         <div className="grid gap-4 md:grid-cols-2">
-          <TextField label="Full Name" value={form.fullName} onChange={(event) => setForm({ ...form, fullName: event.target.value })} fullWidth />
-          <TextField label="Email" value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} fullWidth />
-          <TextField label="Phone" value={form.phone} onChange={(event) => setForm({ ...form, phone: event.target.value })} fullWidth />
+          <TextField
+            label={t('profile.info.fullName')}
+            value={form.fullName}
+            onChange={handleChange('fullName')}
+            fullWidth
+            required
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Person sx={{ color: isDark ? '#64748b' : '#6b7280', fontSize: 20 }} />
+                </InputAdornment>
+              ),
+            }}
+            sx={textFieldSx}
+          />
+          <TextField
+            label={t('profile.info.email')}
+            type="email"
+            value={form.email}
+            onChange={handleChange('email')}
+            fullWidth
+            required
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <EmailOutlined sx={{ color: isDark ? '#64748b' : '#6b7280', fontSize: 20 }} />
+                </InputAdornment>
+              ),
+            }}
+            sx={textFieldSx}
+          />
+          <TextField
+            label={t('profile.info.phone')}
+            value={form.phone}
+            onChange={handleChange('phone')}
+            fullWidth
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <PhoneOutlined sx={{ color: isDark ? '#64748b' : '#6b7280', fontSize: 20 }} />
+                </InputAdornment>
+              ),
+            }}
+            sx={textFieldSx}
+          />
         </div>
-        <Button variant="contained" sx={{ borderRadius: 2, backgroundColor: '#091E27', textTransform: 'none' }}>Save Changes</Button>
-      </CardContent>
-    </Card>
+
+        <div className="flex flex-wrap items-center gap-3">
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={isPending || isRefreshing}
+            sx={{
+              borderRadius: 2,
+              backgroundColor: '#091E27',
+              textTransform: 'none',
+              fontWeight: 700,
+              px: 3,
+              boxShadow: 'none',
+              '&:hover': { backgroundColor: '#0f2d3a' },
+            }}
+          >
+            {isPending ? (
+              <span className="flex items-center gap-2">
+                <CircularProgress size={16} sx={{ color: '#ffffff' }} />
+                {t('status.saving')}
+              </span>
+            ) : (
+              t('profile.info.saveChanges')
+            )}
+          </Button>
+        </div>
+      </form>
+    </div>
   );
 }
+
+ProfileInfo.propTypes = {
+  profile: PropTypes.shape({
+    fullName: PropTypes.string,
+    email: PropTypes.string,
+    phone: PropTypes.string,
+  }).isRequired,
+  isRefreshing: PropTypes.bool,
+};
+
+ProfileInfo.defaultProps = {
+  isRefreshing: false,
+};
