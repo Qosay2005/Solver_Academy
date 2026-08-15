@@ -1,26 +1,86 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
-const savedLanguage = typeof window !== 'undefined' ? localStorage.getItem('appLang') : 'en';
+const savedLanguage = typeof window !== 'undefined' ? localStorage.getItem('appLang') : null;
 
 const resources = {
   en: {
     translation: {
+      // Navbar & Header
       navbar: {
         home: 'Home',
-        register: 'Register',
+        shop: 'Shop',
+        profile: 'Profile',
         cart: 'Cart',
         login: 'Login',
         logout: 'Logout',
+        register: 'Register',
+        search: 'What are you looking for?',
       },
+
+      // Authentication - Login
+      auth: {
+        login: {
+          title: 'Welcome back',
+          subtitle: 'Please enter your details to login.',
+          email: 'Email',
+          password: 'Password',
+          submit: 'Sign In',
+          noAccount: "Don't have an account?",
+          registerLink: 'Create one here',
+          forgotPassword: 'Forgot your password?',
+          resetLink: 'Reset it here',
+          errors: {
+            invalidEmail: 'Invalid email address',
+            passwordRequired: 'Password is required',
+            loginFailed: 'Login failed. Please check your credentials.',
+          },
+        },
+        register: {
+          title: 'Create Your Account',
+          subtitle: 'Start your journey into engineering excellence today.',
+          fullName: 'Full Name',
+          email: 'Email',
+          phone: 'Phone Number',
+          school: 'School / University',
+          password: 'Password',
+          confirmPassword: 'Confirm Password',
+          submit: 'Create Account',
+          haveAccount: 'Already have an account?',
+          loginLink: 'Sign in here',
+          errors: {
+            nameRequired: 'Full name is required',
+            invalidEmail: 'Invalid email address',
+            phoneRequired: 'Phone number is required',
+            passwordRequired: 'Password is required',
+            passwordMismatch: 'Passwords do not match',
+            registrationFailed: 'Registration failed. Please try again.',
+          },
+        },
+        resetPassword: {
+          title: 'Reset Password',
+          subtitle: 'Enter your email and a new password to reset your account.',
+          email: 'Email Address',
+          newPassword: 'New Password',
+          submit: 'Reset Password',
+          success: 'Password reset request completed.',
+          error: 'Unable to reset password. Please try again.',
+        },
+      },
+
+      // Cart
       cart: {
         title: 'Your Cart',
         subtitle: 'Review the items you have added and continue with your order.',
-        clear: 'Clear Cart',
         empty: 'Your cart is empty right now.',
         continueShopping: '← Continue Shopping',
+        clear: 'Clear Cart',
         remove: 'Remove',
         quantity: 'Quantity',
+        product: 'Product',
+        price: 'Price',
+        itemTotal: 'Total',
+        actions: 'Actions',
         orderSummary: 'Order Summary',
         subtotal: 'Subtotal',
         tax: 'Tax',
@@ -30,33 +90,273 @@ const resources = {
         apply: 'Apply',
         checkout: 'Proceed to Checkout →',
         secure: 'Secure checkout',
+        confirmClear: 'Are you sure you want to clear your cart?',
+        itemRemoved: 'Item removed from cart',
+        itemsCount_one: '{{count}} item',
+        itemsCount_other: '{{count}} items',
       },
-      product: {
+
+      // Products
+      products: {
+        title: 'Featured Products',
+        subtitle: 'Handpicked picks with modern design and great value.',
+        noProducts: 'No products available right now.',
         addToCart: 'Add to Cart',
-        count: 'Count',
+        details: 'View Details',
+        outOfStock: 'Out of Stock',
+        inStock: 'In Stock',
+        rating: 'Rating',
+        reviews: 'Reviews',
+        price: 'Price',
       },
+
+      // Categories
+      categories: {
+        title: 'Browse By Category',
+        label: 'Categories',
+        tech: 'Technology',
+        design: 'Design',
+        marketing: 'Marketing',
+        viewAll: 'View All',
+        noCategories: 'No categories available.',
+      },
+
+      // Shop
+      shop: {
+        title: 'Shop',
+        subtitle: 'Browse all products and refine results by category, price, and rating.',
+        noResults: 'No products match the selected filters.',
+        filters: {
+          title: 'Filters',
+          category: 'Category',
+          maxPrice: 'Max Price',
+          minRating: 'Minimum Rating',
+          all: 'All',
+          reset: 'Reset Filters',
+        },
+      },
+
+      // Product Details
+      productDetails: {
+        title: 'Product Details',
+        description: 'Description',
+        specifications: 'Specifications',
+        addToCart: 'Add to Cart',
+        addedToCart: 'Product added to cart successfully',
+        outOfStock: 'Out of Stock',
+        inStock: 'In Stock',
+        quantity: 'Quantity',
+        reviews: 'Customer Reviews',
+        noReviews: 'No reviews yet. Be the first to review this product.',
+        addReview: 'Write a Review',
+        rating: 'Rating',
+        comment: 'Your Comment',
+        submit: 'Submit Review',
+        yourRating: 'Your Rating',
+        reviewSubmitted: 'Thank you for your review!',
+        reviewFailed: 'Unable to submit review.',
+        back: '← Back to Products',
+        backHome: '← Back to Home',
+        notFound: 'Product not found.',
+        loadingError: 'Unable to load product details.',
+        noImage: 'No image available',
+      },
+
+      // Checkout
+      checkout: {
+        title: 'Checkout',
+        subtitle: 'Confirm your details and place your order.',
+        deliveryAddress: 'Delivery Address',
+        enterAddress: 'Enter your delivery address',
+        orderSummary: 'Order Summary',
+        readyToOrder: 'Ready to order?',
+        confirmOrder: 'Confirm Order',
+        orderPlaced: 'Order placed successfully.',
+        emptyCart: 'Your cart is empty.',
+        checkoutFailed: 'Checkout failed. Please try again.',
+        loadError: 'Unable to load your cart for checkout.',
+      },
+
+      checkoutSuccess: {
+        title: 'Order confirmed!',
+        message: 'Your order has been placed successfully. You will receive a confirmation shortly.',
+        shopMore: 'Shop More',
+        trackOrder: 'Track Order',
+      },
+
+      // Profile
+      profile: {
+        title: 'My Profile',
+        subtitle: 'Manage your account details and view your orders.',
+        info: {
+          title: 'Profile Information',
+          fullName: 'Full Name',
+          email: 'Email',
+          phone: 'Phone',
+          saveChanges: 'Save Changes',
+          changesSaved: 'Changes saved successfully.',
+          saveFailed: 'Failed to save changes.',
+          loadError: 'Unable to load profile.',
+        },
+        orders: {
+          title: 'Order History',
+          noOrders: 'No orders yet.',
+          orderId: 'Order #{{id}}',
+          status: 'Status',
+          total: 'Total',
+          date: 'Date',
+          processing: 'Processing',
+          shipped: 'Shipped',
+          delivered: 'Delivered',
+          cancelled: 'Cancelled',
+          viewDetails: 'View Details',
+          loadError: 'Unable to load order history.',
+        },
+      },
+
+      // Footer
+      footer: {
+        company: 'Hexora Tech',
+        description: 'Modern learning, premium products, and a seamless shopping experience for every learner.',
+        quickLinks: 'Quick Links',
+        contact: 'Contact',
+        followUs: 'Follow Us',
+        email: 'hello@hexoratech.com',
+        phone: '+20 100 123 4567',
+        address: '123 Learning Street, Cairo',
+        copyright: '© 2026 Hexora Tech. All rights reserved.',
+        home: 'Home',
+        shop: 'Shop',
+        cart: 'Cart',
+        profile: 'Profile',
+      },
+
+      // Common UI Elements
       common: {
         retry: 'Retry',
+        back: 'Back',
+        next: 'Next',
+        previous: 'Previous',
+        cancel: 'Cancel',
+        save: 'Save',
+        delete: 'Delete',
+        edit: 'Edit',
+        close: 'Close',
+        submit: 'Submit',
+        loading: 'Loading...',
+        error: 'Error',
+        success: 'Success',
+        warning: 'Warning',
+        noImage: 'No image',
+        noData: 'No data available',
+        searchPlaceholder: 'Search...',
+        lightMode: 'Light Mode',
+        darkMode: 'Dark Mode',
+        english: 'English',
+        arabic: 'العربية',
+      },
+
+      // Errors
+      errors: {
+        404: 'Page not found',
+        500: 'Server error',
+        networkError: 'Network error. Please check your connection.',
+        tryAgain: 'Please try again.',
+        loadFailed: 'Failed to load data.',
+        saveFailed: 'Failed to save data.',
+        deleteFailed: 'Failed to delete data.',
+        unauthorized: 'You are not authorized to perform this action.',
+        notFound: 'Resource not found.',
+      },
+
+      // Loading & Status
+      status: {
+        loading: 'Loading...',
+        saving: 'Saving...',
+        deleting: 'Deleting...',
+        submitting: 'Submitting...',
+        processing: 'Processing...',
       },
     },
   },
+
   ar: {
     translation: {
+      // Navbar & Header
       navbar: {
         home: 'الرئيسية',
-        register: 'إنشاء حساب',
+        shop: 'المتجر',
+        profile: 'ملفي الشخصي',
         cart: 'السلة',
         login: 'تسجيل الدخول',
         logout: 'تسجيل الخروج',
+        register: 'إنشاء حساب',
+        search: 'عن ماذا تبحث؟',
       },
+
+      // Authentication - Login
+      auth: {
+        login: {
+          title: 'أهلا بعودتك',
+          subtitle: 'يرجى إدخال بيانات تسجيل الدخول.',
+          email: 'البريد الإلكتروني',
+          password: 'كلمة المرور',
+          submit: 'دخول',
+          noAccount: 'ليس لديك حساب؟',
+          registerLink: 'أنشئ واحد هنا',
+          forgotPassword: 'هل نسيت كلمة المرور؟',
+          resetLink: 'أعد تعيينها هنا',
+          errors: {
+            invalidEmail: 'عنوان بريد إلكتروني غير صحيح',
+            passwordRequired: 'كلمة المرور مطلوبة',
+            loginFailed: 'فشل تسجيل الدخول. يرجى التحقق من بيانات الاعتماد الخاصة بك.',
+          },
+        },
+        register: {
+          title: 'إنشاء حسابك',
+          subtitle: 'ابدأ رحلتك نحو التميز الهندسي اليوم.',
+          fullName: 'الاسم الكامل',
+          email: 'البريد الإلكتروني',
+          phone: 'رقم الهاتف',
+          school: 'المدرسة / الجامعة',
+          password: 'كلمة المرور',
+          confirmPassword: 'تأكيد كلمة المرور',
+          submit: 'إنشاء الحساب',
+          haveAccount: 'هل لديك حساب بالفعل؟',
+          loginLink: 'سجل الدخول هنا',
+          errors: {
+            nameRequired: 'الاسم الكامل مطلوب',
+            invalidEmail: 'عنوان بريد إلكتروني غير صحيح',
+            phoneRequired: 'رقم الهاتف مطلوب',
+            passwordRequired: 'كلمة المرور مطلوبة',
+            passwordMismatch: 'كلمات المرور غير متطابقة',
+            registrationFailed: 'فشل التسجيل. يرجى المحاولة مرة أخرى.',
+          },
+        },
+        resetPassword: {
+          title: 'إعادة تعيين كلمة المرور',
+          subtitle: 'أدخل بريدك الإلكتروني وكلمة مرور جديدة لإعادة تعيين حسابك.',
+          email: 'عنوان البريد الإلكتروني',
+          newPassword: 'كلمة المرور الجديدة',
+          submit: 'إعادة تعيين كلمة المرور',
+          success: 'تم تقديم طلب إعادة تعيين كلمة المرور.',
+          error: 'فشل إعادة تعيين كلمة المرور. يرجى المحاولة مرة أخرى.',
+        },
+      },
+
+      // Cart
       cart: {
         title: 'سلة التسوق',
         subtitle: 'راجع العناصر التي أضفتها وواصل طلبك.',
-        clear: 'تفريغ السلة',
         empty: 'سلة التسوق فارغة حالياً.',
         continueShopping: '← متابعة التسوق',
+        clear: 'تفريغ السلة',
         remove: 'إزالة',
         quantity: 'الكمية',
+        product: 'المنتج',
+        price: 'السعر',
+        itemTotal: 'الإجمالي',
+        actions: 'إجراءات',
         orderSummary: 'ملخص الطلب',
         subtotal: 'الإجمالي الفرعي',
         tax: 'الضريبة',
@@ -66,13 +366,192 @@ const resources = {
         apply: 'تطبيق',
         checkout: 'متابعة الدفع ←',
         secure: 'دفع آمن',
+        confirmClear: 'هل أنت متأكد من رغبتك في تفريغ السلة؟',
+        itemRemoved: 'تمت إزالة العنصر من السلة',
+        itemsCount_one: 'قطعة واحدة',
+        itemsCount_other: '{{count}} قطع',
       },
-      product: {
+
+      // Products
+      products: {
+        title: 'المنتجات المميزة',
+        subtitle: 'اختيارات مفضلة ذات تصميم عصري وقيمة رائعة.',
+        noProducts: 'لا توجد منتجات متاحة في الوقت الحالي.',
         addToCart: 'أضف إلى السلة',
-        count: 'الكمية',
+        details: 'عرض التفاصيل',
+        outOfStock: 'غير متوفر',
+        inStock: 'متوفر',
+        rating: 'التقييم',
+        reviews: 'التقييمات',
+        price: 'السعر',
       },
+
+      // Categories
+      categories: {
+        title: 'تصفح حسب الفئة',
+        label: 'الفئات',
+        tech: 'التكنولوجيا',
+        design: 'التصميم',
+        marketing: 'التسويق',
+        viewAll: 'عرض الكل',
+        noCategories: 'لا توجد فئات متاحة.',
+      },
+
+      // Shop
+      shop: {
+        title: 'المتجر',
+        subtitle: 'تصفح جميع المنتجات وصفّ النتائج حسب الفئة والسعر والتقييم.',
+        noResults: 'لا توجد منتجات تطابق المرشحات المحددة.',
+        filters: {
+          title: 'المرشحات',
+          category: 'الفئة',
+          maxPrice: 'الحد الأقصى للسعر',
+          minRating: 'الحد الأدنى للتقييم',
+          all: 'الكل',
+          reset: 'إعادة تعيين المرشحات',
+        },
+      },
+
+      // Product Details
+      productDetails: {
+        title: 'تفاصيل المنتج',
+        description: 'الوصف',
+        specifications: 'المواصفات',
+        addToCart: 'أضف إلى السلة',
+        addedToCart: 'تم إضافة المنتج إلى السلة بنجاح',
+        outOfStock: 'غير متوفر',
+        inStock: 'متوفر',
+        quantity: 'الكمية',
+        reviews: 'آراء العملاء',
+        noReviews: 'لا توجد تقييمات حتى الآن. كن الأول في تقييم هذا المنتج.',
+        addReview: 'اكتب تقييم',
+        rating: 'التقييم',
+        comment: 'تعليقك',
+        submit: 'إرسال التقييم',
+        yourRating: 'تقييمك',
+        reviewSubmitted: 'شكراً على تقييمك!',
+        reviewFailed: 'تعذر إرسال التقييم.',
+        back: '← العودة إلى المنتجات',
+        backHome: '← العودة إلى الرئيسية',
+        notFound: 'لم يتم العثور على المنتج.',
+        loadingError: 'فشل تحميل تفاصيل المنتج.',
+        noImage: 'لا توجد صورة متاحة',
+      },
+
+      // Checkout
+      checkout: {
+        title: 'الدفع',
+        subtitle: 'أكّد بياناتك وضع طلبك.',
+        deliveryAddress: 'عنوان التسليم',
+        enterAddress: 'أدخل عنوان التسليم الخاص بك',
+        orderSummary: 'ملخص الطلب',
+        readyToOrder: 'جاهز للطلب؟',
+        confirmOrder: 'تأكيد الطلب',
+        orderPlaced: 'تم وضع الطلب بنجاح.',
+        emptyCart: 'السلة فارغة.',
+        checkoutFailed: 'فشل الدفع. يرجى المحاولة مرة أخرى.',
+        loadError: 'فشل تحميل السلة للدفع.',
+      },
+
+      checkoutSuccess: {
+        title: 'تم تأكيد الطلب!',
+        message: 'تم وضع طلبك بنجاح. سوف تتلقى رسالة تأكيد قريباً.',
+        shopMore: 'تسوق المزيد',
+        trackOrder: 'تتبع الطلب',
+      },
+
+      // Profile
+      profile: {
+        title: 'ملفي الشخصي',
+        subtitle: 'أدر بيانات حسابك واعرض طلباتك.',
+        info: {
+          title: 'معلومات الملف الشخصي',
+          fullName: 'الاسم الكامل',
+          email: 'البريد الإلكتروني',
+          phone: 'الهاتف',
+          saveChanges: 'حفظ التغييرات',
+          changesSaved: 'تم حفظ التغييرات بنجاح.',
+          saveFailed: 'فشل حفظ التغييرات.',
+          loadError: 'فشل تحميل الملف الشخصي.',
+        },
+        orders: {
+          title: 'سجل الطلبات',
+          noOrders: 'لا توجد طلبات حتى الآن.',
+          orderId: 'الطلب #{{id}}',
+          status: 'الحالة',
+          total: 'الإجمالي',
+          date: 'التاريخ',
+          processing: 'قيد المعالجة',
+          shipped: 'تم الشحن',
+          delivered: 'تم التسليم',
+          cancelled: 'ملغى',
+          viewDetails: 'عرض التفاصيل',
+          loadError: 'فشل تحميل سجل الطلبات.',
+        },
+      },
+
+      // Footer
+      footer: {
+        company: 'Hexora Tech',
+        description: 'التعلم الحديث والمنتجات المميزة وتجربة تسوق سلسة لكل متعلم.',
+        quickLinks: 'روابط سريعة',
+        contact: 'اتصل بنا',
+        followUs: 'تابعنا',
+        email: 'hello@hexoratech.com',
+        phone: '+20 100 123 4567',
+        address: '123 شارع التعليم، القاهرة',
+        copyright: '© 2026 Hexora Tech. جميع الحقوق محفوظة.',
+        home: 'الرئيسية',
+        shop: 'المتجر',
+        cart: 'السلة',
+        profile: 'الملف الشخصي',
+      },
+
+      // Common UI Elements
       common: {
         retry: 'إعادة المحاولة',
+        back: 'رجوع',
+        next: 'التالي',
+        previous: 'السابق',
+        cancel: 'إلغاء',
+        save: 'حفظ',
+        delete: 'حذف',
+        edit: 'تعديل',
+        close: 'إغلاق',
+        submit: 'إرسال',
+        loading: 'جاري التحميل...',
+        error: 'خطأ',
+        success: 'نجح',
+        warning: 'تحذير',
+        noImage: 'لا توجد صورة',
+        noData: 'لا توجد بيانات متاحة',
+        searchPlaceholder: 'بحث...',
+        lightMode: 'الوضع الفاتح',
+        darkMode: 'الوضع الليلي',
+        english: 'English',
+        arabic: 'العربية',
+      },
+
+      // Errors
+      errors: {
+        404: 'الصفحة غير موجودة',
+        500: 'خطأ في الخادم',
+        networkError: 'خطأ في الاتصال. يرجى التحقق من اتصالك.',
+        tryAgain: 'يرجى المحاولة مرة أخرى.',
+        loadFailed: 'فشل تحميل البيانات.',
+        saveFailed: 'فشل حفظ البيانات.',
+        deleteFailed: 'فشل حذف البيانات.',
+        unauthorized: 'أنت غير مصرح بإجراء هذا الإجراء.',
+        notFound: 'المورد غير موجود.',
+      },
+
+      // Loading & Status
+      status: {
+        loading: 'جاري التحميل...',
+        saving: 'جاري الحفظ...',
+        deleting: 'جاري الحذف...',
+        submitting: 'جاري الإرسال...',
+        processing: 'جاري المعالجة...',
       },
     },
   },

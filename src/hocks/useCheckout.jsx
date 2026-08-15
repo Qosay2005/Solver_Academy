@@ -12,7 +12,10 @@ export default function useCheckout() {
       const response = await AuthaxiosInstance.post('/Checkouts', payload);
       return response.data;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      // السيرفر بيرجع 200 حتى لو الدفع فشل، والفشل بيتحدد من data.success
+      if (data?.success === false) return;
+
       clearCartMutation.mutate();
       navigate('/checkout/success');
     },

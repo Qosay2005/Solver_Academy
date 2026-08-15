@@ -54,7 +54,7 @@ export default function Navbar() {
 
   const navLinks = [
     { to: '/', label: t('navbar.home') },
-    { to: '/shop', label: 'Shop' },
+    { to: '/shop', label: t('navbar.shop') },
   ]
 
   return (
@@ -88,7 +88,7 @@ export default function Navbar() {
           ))}
           {token ? (
             <Link to="/profile" className={navLinkClass}>
-              Profile
+              {t('navbar.profile')}
             </Link>
           ) : null}
           {token ? (
@@ -219,7 +219,7 @@ export default function Navbar() {
 
           {token ? (
             <Link to="/profile" onClick={closeMenu} className={mobileLinkClass}>
-              Profile
+              {t('navbar.profile')}
             </Link>
           ) : null}
 
@@ -239,7 +239,7 @@ export default function Navbar() {
               }
             >
               {isDark ? <LightMode fontSize="small" /> : <DarkMode fontSize="small" />}
-              {isDark ? 'Light Mode' : 'Dark Mode'}
+              {isDark ? t('common.lightMode') : t('common.darkMode')}
             </button>
 
             <button
@@ -253,7 +253,7 @@ export default function Navbar() {
                   : 'flex-1 rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-medium text-[#1B3A4B] transition hover:bg-[#F4F7F9]'
               }
             >
-              {isArabic ? 'English' : 'العربية'}
+              {isArabic ? t('common.english') : t('common.arabic')}
             </button>
           </div>
 

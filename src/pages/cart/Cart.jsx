@@ -251,7 +251,7 @@ export default function Cart() {
                 {t('cart.checkout')}
               </Button>
 
-              <Link to="/" className="block text-center text-sm font-semibold text-[#DB4444] no-underline">
+              <Link to="/shop" className="block text-center text-sm font-semibold text-[#DB4444] no-underline">
                 {t('cart.continueShopping')}
               </Link>
             </CardContent>

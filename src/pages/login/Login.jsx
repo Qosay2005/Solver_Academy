@@ -23,6 +23,7 @@ import Logo from "../../components/logo/Logo"
 import { Link, useNavigate } from "react-router-dom";
 import useAuthStore from "../../hocks/authStore";
 import useThemeStore from '../../hocks/useThemeStore';
+import { useTranslation } from 'react-i18next';
 
 export default function Login() {
    const [serverErrors, setserverErrors] = useState([]);
@@ -30,6 +31,7 @@ export default function Login() {
    const setToken = useAuthStore((state) => state.setToken);
    const mode = useThemeStore((state) => state.mode);
    const isDark = mode === 'dark';
+   const { t } = useTranslation();
     const {
       register,
       handleSubmit,
@@ -66,10 +68,11 @@ export default function Login() {
                     mb: 0.5,
                   }}
                 >
-                  Welcome back
+                  {t('auth.login.title')}
                 </Typography>
                 <Typography sx={{ color: "#6b7280", fontSize: "0.72rem" }}>
-        Please enter your details to login.                 </Typography>
+                  {t('auth.login.subtitle')}
+                </Typography>
               </Box>
   
               {serverErrors?.map((error, index) => (
@@ -85,7 +88,7 @@ export default function Login() {
               >
                 <TextField
                   {...register("email")}
-                  label="Email"
+                  label={t('auth.login.email')}
                   variant="outlined"
                   size="small"
                   error={Boolean(errors.email)}
@@ -128,7 +131,7 @@ export default function Login() {
   
                 <TextField
                   {...register("password")}
-                  label="Password"
+                  label={t('auth.login.password')}
                   variant="outlined"
                   type="password"
                   size="small"
@@ -190,19 +193,19 @@ export default function Login() {
                   {isSubmitting ? (
                     <Box className="flex items-center gap-2">
                       <CircularProgress size={16} sx={{ color: "#ffffff" }} />
-                      <span>Login Account...</span>
+                      <span>{t('status.loading')}</span>
                     </Box>
                   ) : (
-                    "Login →"
+                    t('auth.login.submit')
                   )}
                 </Button>
               </Box>
   
               <Box className="mt-4 text-center">
                 <Typography sx={{ color: "#6b7280", fontSize: "0.72rem" }}>
-                  Don't have an account?  {" "}
+                  {t('auth.login.noAccount')}  {" "}
                   <Box component="span" sx={{ color: "#091E27", fontWeight: 700 }}>
-                    <Link to="/register">Create Account</Link>
+                    <Link to="/register">{t('auth.login.registerLink')}</Link>
                   </Box>
                 </Typography>
               </Box>
