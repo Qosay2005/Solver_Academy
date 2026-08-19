@@ -1,31 +1,26 @@
-import React, { useRef } from 'react';
-import { Alert, Button, Card, CircularProgress, Typography } from '@mui/material';
-import { ArrowBackIosNew, ArrowForwardIos, CategoryOutlined } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
-import useCatogories from '../../hocks/useCatogories';
+import React, { useRef } from 'react'
+import {
+  Alert,
+  Button,
+  Card,
+  CircularProgress,
+  Typography,
+} from '@mui/material'
+import { CategoryOutlined } from '@mui/icons-material'
+import { Link } from 'react-router-dom'
+
+import useCatogories from '../../hocks/useCatogories'
 
 export default function Catogories() {
-  const { data, isLoading, isError, error, refetch } = useCatogories();
-  const scrollRef = useRef(null);
-
-  const categories = Array.isArray(data?.response?.data)
-    ? data.response.data
-    : Array.isArray(data?.data)
-      ? data.data
-      : Array.isArray(data)
-        ? data
-        : [];
-
-  const scrollByAmount = (amount) => {
-    scrollRef.current?.scrollBy({ left: amount, behavior: 'smooth' });
-  };
+  const { data, isLoading, isError, error, refetch } = useCatogories()
+  const scrollRef = useRef(null)
 
   if (isLoading) {
     return (
       <div className="flex justify-center py-6">
         <CircularProgress sx={{ color: '#DB4444' }} />
       </div>
-    );
+    )
   }
 
   if (isError) {
@@ -34,7 +29,11 @@ export default function Catogories() {
         <Alert
           severity="error"
           action={
-            <Button color="inherit" size="small" onClick={() => refetch()}>
+            <Button
+              color="inherit"
+              size="small"
+              onClick={refetch}
+            >
               Retry
             </Button>
           }
@@ -42,13 +41,21 @@ export default function Catogories() {
           {error?.message || 'Unable to load categories.'}
         </Alert>
       </div>
-    );
+    )
+  }
+
+  const scrollByAmount = (amount) => {
+    scrollRef.current?.scrollBy({
+      left: amount,
+      behavior: 'smooth',
+    })
   }
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 bg-[#FFFFFF]">
+    <section className="mx-auto max-w-7xl bg-white px-4 py-10 sm:px-6 lg:px-8">
       <div className="mb-3 flex items-center gap-3">
         <span className="h-7 w-4 rounded-[3px] bg-gradient-to-b from-[#FF6B6B] to-[#DB4444]" />
+
         <Typography
           variant="subtitle2"
           className="font-bold uppercase tracking-[0.12em] text-[#DB4444]"
@@ -57,34 +64,33 @@ export default function Catogories() {
         </Typography>
       </div>
 
-      
       <div className="mb-8 flex items-end justify-between">
-        <Typography variant="h4" className="text-2xl font-extrabold tracking-tight text-zinc-900 sm:text-3xl">
+        <Typography
+          variant="h4"
+          className="text-2xl font-extrabold tracking-tight text-zinc-900 sm:text-3xl"
+        >
           Browse By Category
         </Typography>
-
-        
       </div>
 
-   
       <div
         ref={scrollRef}
-        className="flex gap-5 overflow-x-auto scroll-smooth pb-4 "
+        className="flex gap-5 overflow-x-auto scroll-smooth pb-4"
         style={{ scrollbarWidth: 'none' }}
       >
-        {categories.map((category, index) => (
+        {data.map((category) => (
           <Card
-            key={category?.id || `${category?.name || 'category'}-${index}`}
+            key={category.id}
             component={Link}
             to="/shop"
             elevation={0}
-            className="group flex min-w-[136px] flex-1 basis-[136px] flex-col items-center justify-center gap-4 rounded-2xl border border-zinc-200 bg-white py-8 no-underline transition-all duration-400 ease-out hover:-translate-y-1 hover:border-transparent shadow-lg hover:shadow-[0_12px_30px_-8px_rgba(219,68,68,0.45)] sm:min-w-[156px]"
+            className="group flex min-w-[136px] flex-1 basis-[136px] flex-col items-center justify-center gap-4 rounded-2xl border border-zinc-200 bg-white py-8 no-underline shadow-lg transition-all duration-400 ease-out hover:-translate-y-1 hover:border-transparent hover:shadow-[0_12px_30px_-8px_rgba(219,68,68,0.45)] sm:min-w-[156px]"
           >
             <span className="flex h-14 w-14 items-center justify-center rounded-full bg-zinc-100 transition-all duration-400 ease-out group-hover:scale-105 group-hover:bg-[#DB4444]">
-              {category?.image ? (
+              {category.image ? (
                 <img
                   src={category.image}
-                  alt={category?.name || 'Category'}
+                  alt={category.name}
                   className="h-8 w-8 rounded object-cover"
                 />
               ) : (
@@ -99,11 +105,11 @@ export default function Catogories() {
               variant="body2"
               className="font-semibold text-zinc-700 transition-colors duration-300 group-hover:text-[#DB4444]"
             >
-              {category?.name || 'Category'}
+              {category.name}
             </Typography>
           </Card>
         ))}
       </div>
     </section>
-  );
+  )
 }
