@@ -19,7 +19,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { LoginSchema } from "../../validation/LoginSchema";
 import { useState } from "react";
 import axiosInstance from "../../api/axiosinstans";
-import Logo from "../../components/logo/Logo"
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuthStore from "../../hocks/authStore";
 import useThemeStore from '../../hocks/useThemeStore';
@@ -57,9 +56,8 @@ export default function Login() {
         <Box className="flex flex-1 items-center justify-center">
           <Box className="w-full max-w-[390px]">
             <Box className="mb-5 flex flex-col items-center gap-3 text-center">
-            <Logo/>
             </Box>
-  
+              
             <Box className={isDark ? "rounded-[28px] bg-slate-800 p-5 shadow-[0_10px_35px_rgba(0,0,0,0.25)] sm:p-6" : "rounded-[28px] bg-white p-5 shadow-[0_10px_35px_rgba(9,30,39,0.08)] sm:p-6"}>
               <Box className="mb-4">
                 <Typography

@@ -16,6 +16,7 @@ const resources = {
         logout: 'Logout',
         register: 'Register',
         search: 'What are you looking for?',
+        contact:"Contact"
       },
 
       // Authentication - Login
@@ -197,7 +198,9 @@ const resources = {
           fullName: 'Full Name',
           email: 'Email',
           phone: 'Phone',
+          editProfile: 'Edit Profile',
           saveChanges: 'Save Changes',
+          cancel: 'Cancel',
           changesSaved: 'Changes saved successfully.',
           saveFailed: 'Failed to save changes.',
           loadError: 'Unable to load profile.',
@@ -297,6 +300,7 @@ const resources = {
         logout: 'تسجيل الخروج',
         register: 'إنشاء حساب',
         search: 'عن ماذا تبحث؟',
+        contact:'تواصل معنا'
       },
 
       // Authentication - Login
@@ -478,7 +482,9 @@ const resources = {
           fullName: 'الاسم الكامل',
           email: 'البريد الإلكتروني',
           phone: 'الهاتف',
+          editProfile: 'تعديل الملف',
           saveChanges: 'حفظ التغييرات',
+          cancel: 'إلغاء',
           changesSaved: 'تم حفظ التغييرات بنجاح.',
           saveFailed: 'فشل حفظ التغييرات.',
           loadError: 'فشل تحميل الملف الشخصي.',

@@ -6,7 +6,8 @@ import { useTranslation } from 'react-i18next'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import useThemeStore from './hocks/useThemeStore'
-
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 export default function App() {
   const queryClient = new QueryClient()
   const { i18n } = useTranslation()

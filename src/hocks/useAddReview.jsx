@@ -16,15 +16,19 @@ export default function useAddReview(productId) {
       if (!rating || rating < 1 || rating > 5) {
         throw new Error('Please choose a rating between 1 and 5.');
       }
-
+    useEffect(()=>{
+    console.log("hello world");
+    },[])
       if (!trimmedComment) {
         throw new Error('Please write a comment before submitting.');
+       
       }
 
-      const response = await AuthaxiosInstance.post(`/Products/${productId}/reviews`, {
-        rating,
-        comment: trimmedComment,
-      });
+    // بعد (صح):
+const response = await AuthaxiosInstance.post(`/Products/${productId}/reviews`, {
+  Rating: rating,
+  Comment: trimmedComment,
+});
 
       return response.data;
     },

@@ -47,9 +47,16 @@ export default function ProfileOrders({ orders, isRefreshing }) {
 
   return (
     <div className="space-y-5">
-      <Typography variant="h6" className={`font-bold ${isDark ? 'text-slate-100' : 'text-zinc-900'}`}>
-        {t('profile.orders.title')}
-      </Typography>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <Typography variant="h6" className={`font-bold ${isDark ? 'text-slate-100' : 'text-zinc-900'}`}>
+          {t('profile.orders.title')}
+        </Typography>
+        {isRefreshing ? (
+          <Typography variant="caption" className={isDark ? 'text-slate-500' : 'text-zinc-500'}>
+            {t('status.loading')}
+          </Typography>
+        ) : null}
+      </div>
 
       {orders.length === 0 ? (
         <div

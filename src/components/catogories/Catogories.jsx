@@ -46,8 +46,7 @@ export default function Catogories() {
   }
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-      {/* Eyebrow label */}
+    <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 bg-[#FFFFFF]">
       <div className="mb-3 flex items-center gap-3">
         <span className="h-7 w-4 rounded-[3px] bg-gradient-to-b from-[#FF6B6B] to-[#DB4444]" />
         <Typography

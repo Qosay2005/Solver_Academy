@@ -125,7 +125,7 @@ export default function ProfileLayout() {
 
         <Box className="px-4 pb-6 sm:px-6">
           <TabPanel value={activeTab} index={0}>
-            <ProfileInfo profile={profile} isRefreshing={isFetching} />
+            <ProfileInfo profile={profile} isRefreshing={isFetching} onProfileUpdated={refetch} />
           </TabPanel>
           <TabPanel value={activeTab} index={1}>
             <ProfileOrders orders={profile.orders} isRefreshing={isFetching} />

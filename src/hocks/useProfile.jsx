@@ -3,15 +3,19 @@ import AuthaxiosInstance from '../api/Authaxiosinstance';
 import useAuthStore from './authStore';
 
 export function normalizeProfileData(data) {
-  const profile = data?.response || data?.data || data || {};
+  const profile = data?.response?.data || data?.response || data?.data || data || {};
 
   const orders = Array.isArray(profile?.orders)
     ? profile.orders
-    : Array.isArray(data?.response?.orders)
-      ? data.response.orders
-      : Array.isArray(data?.data?.orders)
-        ? data.data.orders
-        : [];
+    : Array.isArray(profile?.orderHistory)
+      ? profile.orderHistory
+      : Array.isArray(data?.response?.orders)
+        ? data.response.orders
+        : Array.isArray(data?.data?.orders)
+          ? data.data.orders
+          : Array.isArray(data?.orders)
+            ? data.orders
+            : [];
 
   return {
     fullName: profile?.fullName || profile?.name || profile?.userName || '',
@@ -48,7 +52,8 @@ export function useUpdateProfile() {
   return useMutation({
     mutationFn: updateProfile,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['profile'] });
+      queryClient.invalidateQueries({ queryKey: ['profile'], refetchType: 'active' });
+      queryClient.refetchQueries({ queryKey: ['profile'] });
     },
   });
 }
