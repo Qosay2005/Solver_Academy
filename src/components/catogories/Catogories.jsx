@@ -57,36 +57,19 @@ export default function Catogories() {
         </Typography>
       </div>
 
-      {/* Heading + scroll controls */}
+      
       <div className="mb-8 flex items-end justify-between">
         <Typography variant="h4" className="text-2xl font-extrabold tracking-tight text-zinc-900 sm:text-3xl">
           Browse By Category
         </Typography>
 
-        <div className="flex items-center gap-2.5">
-          <button
-            type="button"
-            onClick={() => scrollByAmount(-260)}
-            aria-label="Scroll categories left"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-600 shadow-sm transition-all duration-200 hover:border-[#DB4444] hover:bg-[#DB4444] hover:text-white hover:shadow-md active:scale-95"
-          >
-            <ArrowBackIosNew sx={{ fontSize: 15 }} />
-          </button>
-          <button
-            type="button"
-            onClick={() => scrollByAmount(260)}
-            aria-label="Scroll categories right"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-600 shadow-sm transition-all duration-200 hover:border-[#DB4444] hover:bg-[#DB4444] hover:text-white hover:shadow-md active:scale-95"
-          >
-            <ArrowForwardIos sx={{ fontSize: 15 }} />
-          </button>
-        </div>
+        
       </div>
 
-      {/* Category strip */}
+   
       <div
         ref={scrollRef}
-        className="flex gap-5 overflow-x-auto scroll-smooth pb-3"
+        className="flex gap-5 overflow-x-auto scroll-smooth pb-4 "
         style={{ scrollbarWidth: 'none' }}
       >
         {categories.map((category, index) => (
@@ -95,9 +78,9 @@ export default function Catogories() {
             component={Link}
             to="/shop"
             elevation={0}
-            className="group flex min-w-[136px] flex-1 basis-[136px] flex-col items-center justify-center gap-4 rounded-2xl border border-zinc-200 bg-white py-8 no-underline transition-all duration-300 ease-out hover:-translate-y-1 hover:border-transparent hover:shadow-[0_12px_30px_-8px_rgba(219,68,68,0.45)] sm:min-w-[156px]"
+            className="group flex min-w-[136px] flex-1 basis-[136px] flex-col items-center justify-center gap-4 rounded-2xl border border-zinc-200 bg-white py-8 no-underline transition-all duration-400 ease-out hover:-translate-y-1 hover:border-transparent shadow-lg hover:shadow-[0_12px_30px_-8px_rgba(219,68,68,0.45)] sm:min-w-[156px]"
           >
-            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-zinc-100 transition-all duration-300 ease-out group-hover:scale-105 group-hover:bg-[#DB4444]">
+            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-zinc-100 transition-all duration-400 ease-out group-hover:scale-105 group-hover:bg-[#DB4444]">
               {category?.image ? (
                 <img
                   src={category.image}
